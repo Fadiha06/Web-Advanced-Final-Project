@@ -21,6 +21,37 @@
   </nav>
 
   <h1>Characters</h1>
+  <div class="filters-wrapper">
+    <input type="text" id="search" placeholder="🔍 Zoek op naam..." class="filter-input">
+    <select id="filter-status" class="filter-select">
+      <option value="">Alle statussen</option>
+      <option value="Alive">Alive</option>
+      <option value="Dead">Dead</option>
+      <option value="unknown">Unknown</option>
+    </select>
+    <select id="filter-species" class="filter-select">
+      <option value="">Alle soorten</option>
+      <option value="Human">Human</option>
+      <option value="Alien">Alien</option>
+      <option value="Humanoid">Humanoid</option>
+      <option value="Robot">Robot</option>
+      <option value="unknown">Unknown</option>
+    </select>
+    <select id="filter-gender" class="filter-select">
+      <option value="">Alle genders</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Genderless">Genderless</option>
+      <option value="unknown">Unknown</option>
+    </select>
+    <select id="sort" class="filter-select">
+      <option value="id-asc">ID ↑</option>
+      <option value="id-desc">ID ↓</option>
+      <option value="name-asc">Naam A-Z</option>
+      <option value="name-desc">Naam Z-A</option>
+    </select>
+  </div>
+
     
 </body>
 </html>
