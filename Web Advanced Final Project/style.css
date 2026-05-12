@@ -140,4 +140,46 @@ body{
 .char-status.alive { color: #97ce4c; }
 .char-status.dead { color: #e74c3c; }
 .char-status.unknown { color: #aaa; }
+.location-card {
+  background: #1a1d23;
+  border-radius: 12px;
+  overflow: hidden;
+  width: calc(33% - 1rem);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+
+.location-card:hover {
+  transform: translateY(-4px);
+}
+
+.location-info {
+  padding: 1.2rem;
+}
+
+.location-info h2 {
+  margin: 0 0 0.5rem 0;
+  color: #97ce4c;
+  font-size: 1.1rem;
+}
+
+.location-dimension {
+  color: #aaa;
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+}
+
+.location-type {
+  color: #aaa;
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+}
+
+.location-residents {
+  color: #97ce4c;
+  margin: 0.5rem 0 0 0;
+  font-size: 0.9rem;
+}
+
 

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>locations</title>
-    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
+  <title>Locations</title>
 </head>
-<nav class="navbar">
+<body>
+
+  <nav class="navbar">
     <div class="navbar-logo">Rick & Morty</div>
     <ul class="nav-links">
       <li><a href="characters.html">Characters</a></li>
@@ -15,10 +15,37 @@
       <li><a href="favorites.html">Favorites</a></li>
       <li><a href="gekeken.html">Watched</a></li>
     </ul>
-    
+    <button id="theme-toggle" class="theme-btn">🌙</button>
   </nav>
 
   <h1>Locations</h1>
-    
+
+  <div class="filters-wrapper">
+    <input type="text" id="search" placeholder="🔍 Zoek op naam..." class="filter-input">
+    <select id="filter-type" class="filter-select">
+      <option value="">Alle types</option>
+      <option value="Planet">Planet</option>
+      <option value="Space station">Space station</option>
+      <option value="Microverse">Microverse</option>
+      <option value="TV">TV</option>
+      <option value="Resort">Resort</option>
+      <option value="Fantasy town">Fantasy town</option>
+      <option value="Dream">Dream</option>
+    </select>
+    <select id="sort" class="filter-select">
+      <option value="id-asc">ID ↑</option>
+      <option value="id-desc">ID ↓</option>
+      <option value="name-asc">Naam A-Z</option>
+      <option value="name-desc">Naam Z-A</option>
+      <option value="residents-desc">Meeste bewoners</option>
+      <option value="residents-asc">Minste bewoners</option>
+    </select>
+  </div>
+
+  <div class="cards-wrapper" id="locations-container"></div>
+
+  <script src="script-locations.js"></script>
+  <script src="theme.js"></script>
+
 </body>
 </html>
