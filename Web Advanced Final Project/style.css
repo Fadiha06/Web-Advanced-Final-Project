@@ -71,6 +71,13 @@ body{
   outline: none;
   border-color: #97ce4c;
 }
+.cards-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  width: 95%;
+  margin: 2rem auto;
+}
 
 .character-card {
   background: #1a1d23;
