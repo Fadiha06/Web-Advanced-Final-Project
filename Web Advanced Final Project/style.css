@@ -36,3 +36,39 @@ body{
   color: #97ce4c;
   border-bottom-color: #97ce4c;
 }
+.filters-wrapper {
+  display: flex;
+  gap: 1rem;
+  width: 95%;
+  margin: 1rem auto;
+  flex-wrap: wrap;
+}
+.filter-input {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #2a2d33;
+  background: #1a1d23;
+  color: #e2e2e2;
+  font-size: 0.95rem;
+  flex: 2;
+  min-width: 200px;
+}
+
+.filter-select {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #2a2d33;
+  background: #1a1d23;
+  color: #e2e2e2;
+  font-size: 0.95rem;
+  flex: 1;
+  min-width: 140px;
+  cursor: pointer;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  outline: none;
+  border-color: #97ce4c;
+}
+
