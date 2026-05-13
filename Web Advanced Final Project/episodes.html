@@ -19,6 +19,45 @@
      <button id="theme-toggle" class="theme-btn">🌙</button>
   </nav>
   <h1>Episodes</h1>
+
+
+   <div class="filters-wrapper">
+    <input type="text" id="search" placeholder="🔍 Zoek op naam..." class="filter-input">
+    <select id="filter-season" class="filter-select">
+      <option value="">Alle seizoenen</option>
+      <option value="S01">Seizoen 1</option>
+      <option value="S02">Seizoen 2</option>
+      <option value="S03">Seizoen 3</option>
+      <option value="S04">Seizoen 4</option>
+      <option value="S05">Seizoen 5</option>
+    </select>
+    <select id="sort" class="filter-select">
+      <option value="id-asc">ID ↑</option>
+      <option value="id-desc">ID ↓</option>
+      <option value="name-asc">Naam A-Z</option>
+      <option value="name-desc">Naam Z-A</option>
+    </select>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Episode</th>
+          <th>Name</th>
+          <th>Air Date</th>
+          <th>Created</th>
+          <th>Characters</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="episodes-table"></tbody>
+    </table>
+  </div>
+
+  <script src="script-episodes.js"></script>
+  <script src="theme.js"></script>
     
 </body>
 </html>
