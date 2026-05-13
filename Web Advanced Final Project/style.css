@@ -225,6 +225,28 @@ body{
   width: 60px;
   text-align: center;
 }
+.favorite-btn {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s, transform 0.2s;
+  padding: 0;
+}
+
+.favorite-btn:hover {
+  color: #f5c518;
+  transform: scale(1.3);
+}
+
+.favorite-btn.active {
+  color: #f5c518;
+}
+
+
+
+
 
 
 
