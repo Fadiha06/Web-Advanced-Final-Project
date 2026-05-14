@@ -243,7 +243,112 @@ body{
 .favorite-btn.active {
   color: #f5c518;
 }
+body.dark {
+  background: #0f1115;
+  color: #e2e2e2;
+}
 
+body.light {
+  background: #f4f4f4;
+  color: #222;
+}
+
+body.light .navbar {
+  background: #ffffff;
+  color: #222;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+body.light .nav-links a {
+  color: #333;
+}
+
+body.light .nav-links a:hover {
+  color: #97ce4c;
+}
+
+body.light .data-table {
+  background: #ffffff;
+  color: #222;
+}
+
+body.light .data-table td {
+  border-bottom: 1px solid #ddd;
+}
+
+body.light .data-table tr:hover {
+  background: rgba(151, 206, 76, 0.15);
+}
+
+body.light .location-card,
+body.light .character-card {
+  background: #ffffff;
+  color: #222;
+}
+
+body.light .filter-input,
+body.light .filter-select {
+  background: #ffffff;
+  color: #222;
+  border-color: #ccc;
+}
+#modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+#modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: #1a1d23;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+.modal-content img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+}
+
+.modal-details {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-details h2 {
+  color: #97ce4c;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.4rem;
+}
+
+.modal-details p {
+  color: #aaa;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.modal-details p span:first-child {
+  color: #e2e2e2;
+  font-weight: 600;
+  margin-right: 6px;
+}
 
 
 
