@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>favorites</title>
     <link rel="stylesheet" href="style.css">
-</head>
+</head> 
+<body>
 <nav class="navbar">
     <div class="navbar-logo">Rick & Morty</div>
     <ul class="nav-links">
@@ -18,7 +19,25 @@
      <button id="theme-toggle" class="theme-btn">🌙</button>
   </nav>
   <h1>Favorites</h1>
+<div class="table-wrapper">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Species</th>
+        <th>Gender</th>
+        <th>Origin</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody id="favorites-table"></tbody>
+  </table>
+</div>
+
   <script src="theme.js"></script>
-    
+    <script src="script-favorite.js"></script>
 </body>
 </html>

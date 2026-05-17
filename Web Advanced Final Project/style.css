@@ -350,8 +350,18 @@ body.light .filter-select {
   margin-right: 6px;
 }
 
+.table-wrapper {
+  width: 95%;
+  margin: 2rem auto;
+}
 
-
+#favorites-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  width: 95%;
+  margin: 2rem auto;
+}
 
 
 
