@@ -364,5 +364,12 @@ body.light .filter-select {
 }
 
 
+.watch-btn { color: #555; }
+.watch-btn:hover { color: #97ce4c; }
+.watch-btn.active { color: #97ce4c; }
+.watch-btn {
+  background: none;
+  border: none;
+}
 
 
