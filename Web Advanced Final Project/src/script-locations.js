@@ -56,3 +56,24 @@ document.getElementById("filter-type").addEventListener("change", renderLocation
 document.getElementById("sort").addEventListener("change", renderLocations);
 
 loadLocations();
+
+function setupLazyLoading() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const card = entry.target;
+        
+        observer.unobserve(card);
+      }
+    });
+  }, { threshold: 0.1 });
+
+
+  document.querySelectorAll(".location-card").forEach(card => {
+    observer.observe(card);
+  });
+}
+
+
+renderLocations();
+setupLazyLoading(); 
