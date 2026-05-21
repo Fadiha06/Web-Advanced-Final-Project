@@ -1,53 +1,170 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="src/style.css">
-    <title>Rick & Morty</title>
-  </head>
-  <body>
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rick and Morty API Project</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigatie -->
     <nav class="navbar">
-      <a href="index.html" class="navbar-logo">Rick & Morty</a>
-      <ul class="nav-links">
-        <li><a href="episodes.html">Episodes</a></li>
-        <li><a href="characters.html">Characters</a></li>
-        <li><a href="locations.html">Locations</a></li>
-        <li><a href="favorites.html">Favorites</a></li>
-        <li><a href="gekeken.html">Watched</a></li>
-        <button id="theme-toggle" class="theme-btn">🌙</button>
-      </ul>
+        <div class="nav-brand">Rick &amp; Morty</div>
+        <ul class="nav-links">
+            <li><a href="#" id="nav-characters" class="active" onclick="showPage('characters')">Personages</a></li>
+            <li><a href="#" id="nav-episodes" onclick="showPage('episodes')">Afleveringen</a></li>
+            <li><a href="#" id="nav-favorites" onclick="showPage('favorites')">Favorieten</a></li>
+            <li><a href="#" id="nav-watched" onclick="showPage('watched')">Gekeken</a></li>
+            <button id="theme-toggle" class="theme-btn">🌙</button>
+        </ul>
     </nav>
 
-    <div class="hero">
-      <h1 class="hero-title">Welcome to the Rick & Morty Universe</h1>
-      <p class="hero-subtitle">Explore characters, episodes and locations from the show.</p>
+    <!-- Hoofdcontent -->
+    <main class="container">
+        <!-- Pagina: Personages -->
+        <section id="page-characters" class="page" style="display: block;">
+            <h1>Personages</h1>
+            <div class="controls">
+                <input type="text" id="search" placeholder="Zoek op naam...">
+                <select id="status-filter">
+                    <option value="">Alle status</option>
+                    <option value="Alive">Levend</option>
+                    <option value="Dead">Dood</option>
+                    <option value="unknown">Onbekend</option>
+                </select>
+                <select id="sort-order">
+                    <option value="name-asc">Naam A-Z</option>
+                    <option value="name-desc">Naam Z-A</option>
+                    <option value="id-asc">ID oplopend</option>
+                    <option value="id-desc">ID aflopend</option>
+                </select>
+            </div>
+            <div id="characters-container" class="card-grid"></div>
+        </section>
 
-      <div class="feature-cards">
-        <a href="characters.html" class="feature-card">
-          <span class="feature-icon"></span>
-          <h2>Characters</h2>
-          <p>Browse all characters, filter by status, species or gender and save your favorites.</p>
-        </a>
-        <a href="episodes.html" class="feature-card">
-          <span class="feature-icon"></span>
-          <h2>Episodes</h2>
-          <p>Explore all episodes per season and keep track of what you've watched.</p>
-        </a>
-        <a href="locations.html" class="feature-card">
-          <span class="feature-icon"></span>
-          <h2>Locations</h2>
-          <p>Discover all locations in the Rick & Morty universe, from planets to dimensions.</p>
-        </a>
-        <a href="favorites.html" class="feature-card">
-          <span class="feature-icon"></span>
-          <h2>Favorites</h2>
-          <p>View all the characters you've saved as favorites.</p>
-        </a>
-      </div>
+        <!-- Pagina: Afleveringen -->
+        <section id="page-episodes" class="page" style="display: none;">
+            <h1>Afleveringen</h1>
+            <div class="controls">
+                <input type="text" id="episode-search" placeholder="Zoek op naam of code...">
+            </div>
+            <div class="table-wrapper">
+                <table class="episodes-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Naam</th>
+                            <th>Uitzenddatum</th>
+                            <th>Actie</th>
+                        </tr>
+                    </thead>
+                    <tbody id="episodes-table"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Pagina: Favorieten -->
+        <section id="page-favorites" class="page" style="display: none;">
+            <h1>Mijn Favorieten</h1>
+            <div class="table-wrapper">
+                <table class="favorites-table">
+                    <thead>
+                        <tr>
+                            <th>Afbeelding</th>
+                            <th>Naam</th>
+                            <th>Status</th>
+                            <th>Soort</th>
+                            <th>Geslacht</th>
+                            <th>Actie</th>
+                        </tr>
+                    </thead>
+                    <tbody id="favorites-table"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Pagina: Gekeken -->
+        <section id="page-watched" class="page" style="display: none;">
+            <h1>Gekeken Afleveringen</h1>
+            <div class="table-wrapper">
+                <table class="watched-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Naam</th>
+                            <th>Uitzenddatum</th>
+                            <th>Actie</th>
+                        </tr>
+                    </thead>
+                    <tbody id="watched-table"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal voor character details -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <img id="modal-img" src="" alt="" class="modal-img">
+            <h2 id="modal-name"></h2>
+            <div class="modal-details">
+                <p><strong>Status:</strong> <span id="modal-status"></span></p>
+                <p><strong>Soort:</strong> <span id="modal-species"></span></p>
+                <p><strong>Geslacht:</strong> <span id="modal-gender"></span></p>
+                <p><strong>Afleveringen:</strong> <span id="modal-episodes"></span></p>
+            </div>
+        </div>
     </div>
 
-    <script src="src/theme.js"></script>
-  </body>
+    <!-- Scripts -->
+    <script src="script-characters.js"></script>
+    <script src="script-episode.JS"></script>
+    <script src="script-favorites.JS"></script>
+    <script src="scipt-gekeken.js"></script>
+    <script src="theme.js"></script>
+    
+
+    <script>
+        /* functie om tussen pagina's te schakelen */
+        function showPage(page) {
+            // Verberg alle pagina's
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            // Verwijder active van alle nav-links
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+
+            // Toon de juiste pagina en markeer de link
+            document.getElementById('page-' + page).style.display = 'block';
+            document.getElementById('nav-' + page).classList.add('active');
+
+            // Herlaad dynamische content indien nodig
+            if (page === 'favorites') {
+                renderFavorites();
+            }
+            if (page === 'watched') {
+                renderWatched();
+            }
+        }
+
+        /* Modal functies */
+        function openModal(character) {
+            document.getElementById('modal-img').src = character.image;
+            document.getElementById('modal-name').textContent = character.name;
+            document.getElementById('modal-status').textContent = character.status;
+            document.getElementById('modal-species').textContent = character.species;
+            document.getElementById('modal-gender').textContent = character.gender;
+            document.getElementById('modal-episodes').textContent = character.episode?.length || 'Onbekend';
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // Sluit modal bij klik buiten content
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
 </html>
