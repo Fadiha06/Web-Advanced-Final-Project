@@ -1,128 +1,129 @@
-let allCharacters = [];
+(async function() {
+    const container = document.getElementById('characters-container');
+    const searchInput = document.getElementById('search');
+    const statusFilter = document.getElementById('status-filter');
+    const sortSelect = document.getElementById('sort-order');
 
-async function loadCharacters() {
-  let results = [];
-  let nextUrl = "https://rickandmortyapi.com/api/character";
+    let allCharacters = [];
 
-  while (nextUrl) {
-    const response = await fetch(nextUrl);
-    const data = await response.json();
-    results = results.concat(data.results);
-    nextUrl = data.info.next;
-  }
+    // Fetch alle personages (let op: meerdere pagina's)
+    async function fetchAllCharacters() {
+        let characters = [];
+        let url = 'https://rickandmortyapi.com/api/character';
+        while (url) {
+            const res = await fetch(url);
+            const data = await res.json();
+            characters = characters.concat(data.results);
+            url = data.info.next;
+        }
+        return characters;
+    }
 
-  allCharacters = results.slice(0, 35);
-  renderCharacters();
-}
+    function renderCards(list) {
+        container.innerHTML = '';
+        list.forEach(ch => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <img src="${ch.image}" alt="${ch.name}">
+                <div class="card-info">
+                    <h3>${ch.name}</h3>
+                    <p><span>Status:</span> ${ch.status}</p>
+                    <p><span>Species:</span> ${ch.species}</p>
+                    <p><span>Gender:</span> ${ch.gender}</p>
+                    <button class="btn-fav" data-id="${ch.id}">❤️</button>
+                </div>
+            `;
+            // Open modal bij klik op card, maar niet op de favorietknop
+            card.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('btn-fav')) {
+                    openModal(ch);
+                }
+            });
+            // Favoriet toevoegen/verwijderen
+            card.querySelector('.btn-fav').addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFavorite(ch.id, ch);
+                updateFavoriteButton(card.querySelector('.btn-fav'), ch.id);
+            });
+            // Update knop status
+            updateFavoriteButton(card.querySelector('.btn-fav'), ch.id);
+            container.appendChild(card);
+        });
+    }
 
-function renderCharacters() {
-  const search = document.getElementById("search").value.toLowerCase();
-  const status = document.getElementById("filter-status").value;
-  const species = document.getElementById("filter-species").value;
-  const gender = document.getElementById("filter-gender").value;
-  const sort = document.getElementById("sort").value;
+    function updateFavoriteButton(btn, id) {
+        const favorites = getFavorites();
+        if (favorites.some(f => f.id === id)) {
+            btn.classList.add('fav-active');
+            btn.textContent = '❤️';
+        } else {
+            btn.classList.remove('fav-active');
+            btn.textContent = '🤍';
+        }
+    }
 
-  let filtered = allCharacters.filter(char => {
-    return (
-      char.name.toLowerCase().includes(search) &&
-      (status === "" || char.status === status) &&
-      (species === "" || char.species === species) &&
-      (gender === "" || char.gender === gender)
-    );
-  });
+    function getFavorites() {
+        return JSON.parse(localStorage.getItem('rm_favorites') || '[]');
+    }
 
-  if (sort === "id-asc") filtered.sort((a, b) => a.id - b.id);
-  if (sort === "id-desc") filtered.sort((a, b) => b.id - a.id);
-  if (sort === "name-asc") filtered.sort((a, b) => a.name.localeCompare(b.name));
-  if (sort === "name-desc") filtered.sort((a, b) => b.name.localeCompare(a.name));
+    function toggleFavorite(id, character) {
+        let favorites = getFavorites();
+        const index = favorites.findIndex(f => f.id === id);
+        if (index >= 0) {
+            favorites.splice(index, 1);
+        } else {
+            favorites.push({
+                id: character.id,
+                name: character.name,
+                image: character.image,
+                status: character.status,
+                species: character.species,
+                gender: character.gender
+            });
+        }
+        localStorage.setItem('rm_favorites', JSON.stringify(favorites));
+    }
 
-  const container = document.getElementById("characters-container");
-  container.innerHTML = "";
+    function filterAndSort() {
+        let filtered = [...allCharacters];
+        const searchTerm = searchInput.value.toLowerCase();
+        const status = statusFilter.value;
 
-  if (filtered.length === 0) {
-    container.innerHTML = `<p style="color:#aaa; margin: 2rem;">Geen characters gevonden.</p>`;
-    return;
-  }
+        if (searchTerm) {
+            filtered = filtered.filter(c => c.name.toLowerCase().includes(searchTerm));
+        }
+        if (status) {
+            filtered = filtered.filter(c => c.status === status);
+        }
 
-  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        const sortVal = sortSelect.value;
+        switch (sortVal) {
+            case 'name-asc':
+                filtered.sort((a,b) => a.name.localeCompare(b.name));
+                break;
+            case 'name-desc':
+                filtered.sort((a,b) => b.name.localeCompare(a.name));
+                break;
+            case 'id-asc':
+                filtered.sort((a,b) => a.id - b.id);
+                break;
+            case 'id-desc':
+                filtered.sort((a,b) => b.id - a.id);
+                break;
+        }
+        renderCards(filtered);
+    }
 
-  filtered.forEach(char => {
-    const isFav = favorites.some(f => f.id === char.id);
-    const card = document.createElement("div");
-    card.classList.add("character-card");
+    // Initialisatie
+    try {
+        allCharacters = await fetchAllCharacters();
+        renderCards(allCharacters);
+    } catch (error) {
+        container.innerHTML = '<p>Fout bij ophalen van personages.</p>';
+    }
 
-    card.innerHTML = `
-      <div class="character-img-wrapper">
-        <img src="${char.image}" alt="${char.name}">
-        <button class="favorite-btn ${isFav ? 'active' : ''}" data-id="${char.id}">
-          ${isFav ? "★" : "☆"}
-        </button>
-      </div>
-      <div class="character-info">
-        <h2>${char.name}</h2>
-        <p class="char-status ${char.status.toLowerCase()}">● ${char.status}</p>
-        <p>🧬 ${char.species}</p>
-        <p>⚧ ${char.gender}</p>
-        <p>📍 ${char.origin.name}</p>
-      </div>
-    `;
-
-    card.querySelector(".favorite-btn").addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggleFavorite(char);
-      renderCharacters();
-    });
-
-    card.addEventListener("click", () => openModal(char));
-
-    container.appendChild(card);
-  });
-}
-
-function openModal(char) {
-  document.getElementById("modal-img").src = char.image;
-  document.getElementById("modal-name").textContent = char.name;
-  document.getElementById("modal-status").textContent = char.status;
-  document.getElementById("modal-status").className = `char-status ${char.status.toLowerCase()}`;
-  document.getElementById("modal-species").textContent = char.species;
-  document.getElementById("modal-gender").textContent = char.gender;
-  document.getElementById("modal-origin").textContent = char.origin.name;
-  document.getElementById("modal-location").textContent = char.location.name;
-  document.getElementById("modal-episodes").textContent = char.episode.length + " episodes";
-  document.getElementById("modal").classList.add("active");
-}
-
-document.addEventListener("click", (e) => {
-  if (e.target.id === "modal") {
-    document.getElementById("modal").classList.remove("active");
-  }
-});
-
-function toggleFavorite(char) {
-  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-  const exists = favorites.some(f => f.id === char.id);
-
-  if (exists) {
-    favorites = favorites.filter(f => f.id !== char.id);
-  } else {
-    favorites.push({
-      id: char.id,
-      name: char.name,
-      image: char.image,
-      status: char.status,
-      species: char.species,
-      gender: char.gender,
-      origin: char.origin.name
-    });
-  }
-
-  localStorage.setItem("favorites", JSON.stringify(favorites));
-}
-
-document.getElementById("search").addEventListener("input", renderCharacters);
-document.getElementById("filter-status").addEventListener("change", renderCharacters);
-document.getElementById("filter-species").addEventListener("change", renderCharacters);
-document.getElementById("filter-gender").addEventListener("change", renderCharacters);
-document.getElementById("sort").addEventListener("change", renderCharacters);
-
-loadCharacters();
+    searchInput.addEventListener('input', filterAndSort);
+    statusFilter.addEventListener('change', filterAndSort);
+    sortSelect.addEventListener('change', filterAndSort);
+})();
