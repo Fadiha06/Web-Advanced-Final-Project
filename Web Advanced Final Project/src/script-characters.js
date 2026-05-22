@@ -6,7 +6,6 @@
 
     let allCharacters = [];
 
-    // Fetch alle personages (let op: meerdere pagina's)
     async function fetchAllCharacters() {
         let characters = [];
         let url = 'https://rickandmortyapi.com/api/character';
@@ -17,50 +16,6 @@
             url = data.info.next;
         }
         return characters;
-    }
-
-    function renderCards(list) {
-        container.innerHTML = '';
-        list.forEach(ch => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <img src="${ch.image}" alt="${ch.name}">
-                <div class="card-info">
-                    <h3>${ch.name}</h3>
-                    <p><span>Status:</span> ${ch.status}</p>
-                    <p><span>Species:</span> ${ch.species}</p>
-                    <p><span>Gender:</span> ${ch.gender}</p>
-                    <button class="btn-fav" data-id="${ch.id}">❤️</button>
-                </div>
-            `;
-            // Open modal bij klik op card, maar niet op de favorietknop
-            card.addEventListener('click', (e) => {
-                if (!e.target.classList.contains('btn-fav')) {
-                    openModal(ch);
-                }
-            });
-            // Favoriet toevoegen/verwijderen
-            card.querySelector('.btn-fav').addEventListener('click', (e) => {
-                e.stopPropagation();
-                toggleFavorite(ch.id, ch);
-                updateFavoriteButton(card.querySelector('.btn-fav'), ch.id);
-            });
-            // Update knop status
-            updateFavoriteButton(card.querySelector('.btn-fav'), ch.id);
-            container.appendChild(card);
-        });
-    }
-
-    function updateFavoriteButton(btn, id) {
-        const favorites = getFavorites();
-        if (favorites.some(f => f.id === id)) {
-            btn.classList.add('fav-active');
-            btn.textContent = '❤️';
-        } else {
-            btn.classList.remove('fav-active');
-            btn.textContent = '🤍';
-        }
     }
 
     function getFavorites() {
@@ -85,6 +40,52 @@
         localStorage.setItem('rm_favorites', JSON.stringify(favorites));
     }
 
+    function renderCards(list) {
+        container.innerHTML = '';
+        list.forEach(ch => {
+            const isFav = getFavorites().some(f => f.id === ch.id);
+            const card = document.createElement('div');
+            card.className = 'character-card';
+            card.innerHTML = `
+                <img src="${ch.image}" alt="${ch.name}">
+                <div class="character-info">
+                    <h2>${ch.name}</h2>
+                    <p class="species">
+                        <span class="status-dot ${ch.status.toLowerCase()}"></span>
+                        ${ch.species}
+                    </p>
+                    <p class="label">Origin</p>
+                    <p class="value">${ch.origin.name}</p>
+                    <p class="label">Last location</p>
+                    <p class="value">${ch.location.name}</p>
+                    <p class="label">Appears on</p>
+                    <p class="value">${ch.episode.length} chapters</p>
+                    <button class="btn-fav ${isFav ? 'fav-active' : ''}" data-id="${ch.id}">
+                        ${isFav ? '❤️' : '🤍'}
+                    </button>
+                </div>
+            `;
+
+            card.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('btn-fav')) {
+                    openModal(ch);
+                }
+            });
+
+            card.querySelector('.btn-fav').addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFavorite(ch.id, ch);
+                const btn = e.target;
+                const favs = getFavorites();
+                const active = favs.some(f => f.id === ch.id);
+                btn.classList.toggle('fav-active', active);
+                btn.textContent = active ? '❤️' : '🤍';
+            });
+
+            container.appendChild(card);
+        });
+    }
+
     function filterAndSort() {
         let filtered = [...allCharacters];
         const searchTerm = searchInput.value.toLowerCase();
@@ -97,25 +98,16 @@
             filtered = filtered.filter(c => c.status === status);
         }
 
-        const sortVal = sortSelect.value;
-        switch (sortVal) {
-            case 'name-asc':
-                filtered.sort((a,b) => a.name.localeCompare(b.name));
-                break;
-            case 'name-desc':
-                filtered.sort((a,b) => b.name.localeCompare(a.name));
-                break;
-            case 'id-asc':
-                filtered.sort((a,b) => a.id - b.id);
-                break;
-            case 'id-desc':
-                filtered.sort((a,b) => b.id - a.id);
-                break;
+        switch (sortSelect.value) {
+            case 'name-asc': filtered.sort((a,b) => a.name.localeCompare(b.name)); break;
+            case 'name-desc': filtered.sort((a,b) => b.name.localeCompare(a.name)); break;
+            case 'id-asc': filtered.sort((a,b) => a.id - b.id); break;
+            case 'id-desc': filtered.sort((a,b) => b.id - a.id); break;
         }
+
         renderCards(filtered);
     }
 
-    // Initialisatie
     try {
         allCharacters = await fetchAllCharacters();
         renderCards(allCharacters);
