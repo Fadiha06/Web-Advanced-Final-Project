@@ -2,6 +2,7 @@
     const container = document.getElementById('characters-container');
     const searchInput = document.getElementById('search');
     const statusFilter = document.getElementById('status-filter');
+    const speciesFilter = document.getElementById('species-filter'); // NIEUW
     const sortSelect = document.getElementById('sort-order');
 
     let allCharacters = [];
@@ -90,12 +91,16 @@
         let filtered = [...allCharacters];
         const searchTerm = searchInput.value.toLowerCase();
         const status = statusFilter.value;
+        const species = speciesFilter.value; // NIEUW
 
         if (searchTerm) {
             filtered = filtered.filter(c => c.name.toLowerCase().includes(searchTerm));
         }
         if (status) {
             filtered = filtered.filter(c => c.status === status);
+        }
+        if (species) { // NIEUW
+            filtered = filtered.filter(c => c.species === species);
         }
 
         switch (sortSelect.value) {
@@ -117,5 +122,6 @@
 
     searchInput.addEventListener('input', filterAndSort);
     statusFilter.addEventListener('change', filterAndSort);
+    speciesFilter.addEventListener('change', filterAndSort); // NIEUW
     sortSelect.addEventListener('change', filterAndSort);
 })();
