@@ -2,10 +2,20 @@
     const container = document.getElementById('characters-container');
     const searchInput = document.getElementById('search');
     const statusFilter = document.getElementById('status-filter');
-    const speciesFilter = document.getElementById('species-filter'); // NIEUW
+    const speciesFilter = document.getElementById('species-filter');
     const sortSelect = document.getElementById('sort-order');
 
     let allCharacters = [];
+
+    // Expliciete Promise functie
+    function fetchPagePromise(url) {
+        return new Promise((resolve, reject) => {
+            fetch(url)
+                .then(res => res.json())
+                .then(data => resolve(data))
+                .catch(err => reject(err));
+        });
+    }
 
     async function fetchAllCharacters() {
         let characters = [];
@@ -43,6 +53,16 @@
 
     function renderCards(list) {
         container.innerHTML = '';
+
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
         list.forEach(ch => {
             const isFav = getFavorites().some(f => f.id === ch.id);
             const card = document.createElement('div');
@@ -84,6 +104,7 @@
             });
 
             container.appendChild(card);
+            observer.observe(card); 
         });
     }
 
@@ -91,7 +112,7 @@
         let filtered = [...allCharacters];
         const searchTerm = searchInput.value.toLowerCase();
         const status = statusFilter.value;
-        const species = speciesFilter.value; // NIEUW
+        const species = speciesFilter.value;
 
         if (searchTerm) {
             filtered = filtered.filter(c => c.name.toLowerCase().includes(searchTerm));
@@ -99,7 +120,7 @@
         if (status) {
             filtered = filtered.filter(c => c.status === status);
         }
-        if (species) { // NIEUW
+        if (species) {
             filtered = filtered.filter(c => c.species === species);
         }
 
@@ -120,8 +141,18 @@
         container.innerHTML = '<p>Fout bij ophalen van personages.</p>';
     }
 
-    searchInput.addEventListener('input', filterAndSort);
+    
+    searchInput.addEventListener('input', () => {
+        const val = searchInput.value.trim();
+        if (val.length === 1) {
+            searchInput.style.borderColor = '#e74c3c'; 
+        } else {
+            searchInput.style.borderColor = '#97ce4c'; 
+            filterAndSort();
+        }
+    });
+
     statusFilter.addEventListener('change', filterAndSort);
-    speciesFilter.addEventListener('change', filterAndSort); // NIEUW
+    speciesFilter.addEventListener('change', filterAndSort);
     sortSelect.addEventListener('change', filterAndSort);
 })();
