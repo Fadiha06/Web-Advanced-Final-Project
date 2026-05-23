@@ -38,13 +38,13 @@ Endpoint	Gebruik
 /api/character	Alle personages ophalen (826 personages, meerdere pagina's)
 /api/episode	Alle afleveringen ophalen
 
-⚙️ Installatie
+ Installatie
 bash
 # 1. Clone de repository
-git clone https://github.com/JOUWGEBRUIKERSNAAM/JOUWREPONAAM.git
+git clone https://github.com/Fadiha06/Web-Advanced-Final-Project
 
 # 2. Ga naar de map
-cd JOUWREPONAAM
+cd web_advanced_project
 
 # 3. Installeer de dependencies
 npm install
