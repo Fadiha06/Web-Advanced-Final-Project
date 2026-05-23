@@ -7,7 +7,7 @@
 
     let allCharacters = [];
 
-    // Expliciete Promise functie
+    
     function fetchPagePromise(url) {
         return new Promise((resolve, reject) => {
             fetch(url)

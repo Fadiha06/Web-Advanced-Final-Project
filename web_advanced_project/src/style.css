@@ -517,3 +517,15 @@ button.action-btn.remove-btn:hover {
 .btn-fav.fav-active {
     transform: scale(1.1);
 }
+
+.character-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s, transform 0.4s;
+}
+.character-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
