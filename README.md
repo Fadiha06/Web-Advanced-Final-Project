@@ -8,10 +8,10 @@ Personages paginA
 Hier zie je hoe de app eruitziet:
 
 
-![Personages](web_advanced_project\src\assets\personage.png)
-![Afleveringen](web_advanced_project\src\assets\aflevering.png)
-![Favorieten](web_advanced_project\src\assets\Favorieten.png)
-![Gekeken](web_advanced_project\src\assets\Watched.png)
+![Personages](image.png)
+![Afleveringen](image-1.png)
+![Favorieten](image-2.png)
+![Gekeken](image-3.png)
 
 
  Functionaliteiten
